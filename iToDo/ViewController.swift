@@ -10,7 +10,7 @@ import UIKit
 
 class ViewController: UITableViewController {
     
-    let listArray = ["Morning", "Afternoon", "Evening"]
+    var listArray = ["Morning", "Afternoon", "Evening"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,5 +41,25 @@ class ViewController: UITableViewController {
         tableView.deselectRow(at: indexPath, animated: true)
     }
 
+    
+    @IBAction func addPressed(_ sender: UIBarButtonItem) {
+        var textField = UITextField()
+        
+        let alert = UIAlertController(title: "Add To Do List", message: "What will you do today?", preferredStyle: .alert)
+        
+        let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
+            self.listArray.append(textField.text!)
+            self.tableView.reloadData()
+        }
+        
+        alert.addTextField { (alertTextField) in
+            alertTextField.placeholder = "Create new item"
+            textField = alertTextField
+        }
+        
+        alert.addAction(action)
+        present(alert, animated: true, completion: nil)
+    }
+    
 }
 
