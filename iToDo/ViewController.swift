@@ -11,10 +11,15 @@ import UIKit
 class ViewController: UITableViewController {
     
     var listArray = ["Morning", "Afternoon", "Evening"]
+    let defaults = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if let items = defaults.array(forKey: "TodoListArray") as? [String] {
+            listArray = items
+            print(items)
+        }
         
         // Do any additional setup after loading the view, typically from a nib.
     }
@@ -37,7 +42,6 @@ class ViewController: UITableViewController {
         } else {
             tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
         }
-//        tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
         tableView.deselectRow(at: indexPath, animated: true)
     }
 
@@ -49,6 +53,7 @@ class ViewController: UITableViewController {
         
         let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
             self.listArray.append(textField.text!)
+            self.defaults.setValue(self.listArray, forKey: "TodoListArray")
             self.tableView.reloadData()
         }
         

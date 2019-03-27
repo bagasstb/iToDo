@@ -9,7 +9,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--iToDo-->
+        <!--iTodo-->
         <scene sceneID="dJ9-jX-dB4">
             <objects>
                 <tableViewController id="OpC-k4-3k0" customClass="ViewController" customModule="iToDo" customModuleProvider="target" sceneMemberID="viewController">
@@ -32,7 +32,7 @@
                             <outlet property="delegate" destination="OpC-k4-3k0" id="oy3-QQ-Kcj"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="iToDo" id="A9d-Dy-GEk">
+                    <navigationItem key="navigationItem" title="iTodo" id="A9d-Dy-GEk">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="DP9-Jf-PMw">
                             <color key="tintColor" red="0.93725490570000003" green="0.93725490570000003" blue="0.95686274770000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
