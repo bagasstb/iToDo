@@ -10,18 +10,15 @@ import UIKit
 
 class ViewController: UITableViewController {
     
-    var listArray = ["Morning", "Afternoon", "Evening"]
+    var listArray = [Item]()
+    let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Item.plist")
     let defaults = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let items = defaults.array(forKey: "TodoListArray") as? [String] {
-            listArray = items
-            print(items)
-        }
-        
-        // Do any additional setup after loading the view, typically from a nib.
+        loadItem()
+
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -31,31 +28,43 @@ class ViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "todoCell", for: indexPath)
         
-        cell.textLabel?.text = listArray[indexPath.row]
+        let item = listArray[indexPath.row]
+        
+        cell.accessoryType = item.done ? .checkmark: .none
+        cell.textLabel?.text = item.title
         
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if tableView.cellForRow(at: indexPath)?.accessoryType == .checkmark {
-            tableView.cellForRow(at: indexPath)?.accessoryType = .none
-        } else {
-            tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
-        }
+        
+        listArray[indexPath.row].done = !listArray[indexPath.row].done
+        saveItem()
         tableView.deselectRow(at: indexPath, animated: true)
     }
 
-    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        
+        if editingStyle == .delete {
+//            tableView.deleteRows(at: [indexPath], with: .fade)
+            deleteItem(index: indexPath.row)
+        }
+    }
+
     @IBAction func addPressed(_ sender: UIBarButtonItem) {
         var textField = UITextField()
         
         let alert = UIAlertController(title: "Add To Do List", message: "What will you do today?", preferredStyle: .alert)
         
         let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
-            self.listArray.append(textField.text!)
-            self.defaults.setValue(self.listArray, forKey: "TodoListArray")
-            self.tableView.reloadData()
+            let newItem = Item()
+            newItem.title = textField.text!
+            
+            self.listArray.append(newItem)
+            self.saveItem()
         }
+        
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         
         alert.addTextField { (alertTextField) in
             alertTextField.placeholder = "Create new item"
@@ -63,8 +72,37 @@ class ViewController: UITableViewController {
         }
         
         alert.addAction(action)
+        alert.addAction(cancel)
         present(alert, animated: true, completion: nil)
     }
     
+    func saveItem() {
+        let encoder = PropertyListEncoder()
+        
+        do {
+            let data = try encoder.encode(self.listArray)
+            try data.write(to: self.dataFilePath!)
+            
+        } catch {
+            print("error")
+        }
+        self.tableView.reloadData()
+    }
+    
+    func loadItem() {
+        if let data = try? Data(contentsOf: dataFilePath!) {
+            let decoder = PropertyListDecoder()
+            do {
+                listArray = try decoder.decode([Item].self, from: data)
+            } catch {
+                print("error \(error)")
+            }
+        }
+    }
+    
+    func deleteItem(index: Int) {
+        listArray.remove(at: index)
+        saveItem()
+    }
 }
 
