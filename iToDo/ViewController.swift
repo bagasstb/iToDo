@@ -50,6 +50,7 @@ class ViewController: UITableViewController {
             deleteItem(index: indexPath.row)
         }
     }
+    
 
     @IBAction func addPressed(_ sender: UIBarButtonItem) {
         var textField = UITextField()
@@ -77,27 +78,27 @@ class ViewController: UITableViewController {
     }
     
     func saveItem() {
-        let encoder = PropertyListEncoder()
-        
-        do {
-            let data = try encoder.encode(self.listArray)
-            try data.write(to: self.dataFilePath!)
-            
-        } catch {
-            print("error")
-        }
-        self.tableView.reloadData()
+//        let encoder = PropertyListEncoder()
+//        
+//        do {
+//            let data = try encoder.encode(self.listArray)
+//            try data.write(to: self.dataFilePath!)
+//            
+//        } catch {
+//            print("error")
+//        }
+//        self.tableView.reloadData()
     }
     
     func loadItem() {
-        if let data = try? Data(contentsOf: dataFilePath!) {
-            let decoder = PropertyListDecoder()
-            do {
-                listArray = try decoder.decode([Item].self, from: data)
-            } catch {
-                print("error \(error)")
-            }
-        }
+//        if let data = try? Data(contentsOf: dataFilePath!) {
+//            let decoder = PropertyListDecoder()
+//            do {
+//                listArray = try decoder.decode([Item].self, from: data)
+//            } catch {
+//                print("error \(error)")
+//            }
+//        }
     }
     
     func deleteItem(index: Int) {
