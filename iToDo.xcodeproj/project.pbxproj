@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		B2B2BA5216E532D929113108 /* Pods_iToDo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7036333C27D6D883023727D /* Pods_iToDo.framework */; };
-		D00FDF502253AEDC0095DBC1 /* Datas.swift in Sources */ = {isa = PBXBuildFile; fileRef = D00FDF4F2253AEDC0095DBC1 /* Datas.swift */; };
 		D00FDF522253DEE10095DBC1 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = D00FDF512253DEE10095DBC1 /* Category.swift */; };
 		D085E666224BA05100D6BFD2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D085E665224BA05100D6BFD2 /* AppDelegate.swift */; };
 		D085E668224BA05100D6BFD2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D085E667224BA05100D6BFD2 /* ViewController.swift */; };
@@ -37,7 +36,6 @@
 		797727224F1298810B64F873 /* Pods-iToDo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iToDo.release.xcconfig"; path = "Pods/Target Support Files/Pods-iToDo/Pods-iToDo.release.xcconfig"; sourceTree = "<group>"; };
 		9B366B7FE2CFA164446D9476 /* Pods-iToDoTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iToDoTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iToDoTests/Pods-iToDoTests.debug.xcconfig"; sourceTree = "<group>"; };
 		B6CB245CAA97200792F8247C /* Pods-iToDo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iToDo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iToDo/Pods-iToDo.debug.xcconfig"; sourceTree = "<group>"; };
-		D00FDF4F2253AEDC0095DBC1 /* Datas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Datas.swift; sourceTree = "<group>"; };
 		D00FDF512253DEE10095DBC1 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		D085E662224BA05100D6BFD2 /* iToDo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iToDo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D085E665224BA05100D6BFD2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -139,7 +137,6 @@
 			isa = PBXGroup;
 			children = (
 				D0E9F46F224C814E0071AF83 /* Item.swift */,
-				D00FDF4F2253AEDC0095DBC1 /* Datas.swift */,
 				D00FDF512253DEE10095DBC1 /* Category.swift */,
 			);
 			name = Model;
@@ -328,7 +325,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				D085E668224BA05100D6BFD2 /* ViewController.swift in Sources */,
-				D00FDF502253AEDC0095DBC1 /* Datas.swift in Sources */,
 				D0E9F470224C814E0071AF83 /* Item.swift in Sources */,
 				D085E666224BA05100D6BFD2 /* AppDelegate.swift in Sources */,
 				D0E9F475224CE1790071AF83 /* CategoryViewController.swift in Sources */,

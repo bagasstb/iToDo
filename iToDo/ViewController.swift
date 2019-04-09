@@ -88,6 +88,7 @@ class ViewController: UITableViewController {
                     try self.realm.write {
                         let newItem = Item()
                         newItem.title = textField.text!
+                        newItem.dateCreated = Date()
                         currentCategory.items.append(newItem)
                     }
                 } catch {
@@ -109,34 +110,27 @@ class ViewController: UITableViewController {
         present(alert, animated: true, completion: nil)
     }
     
-    func saveItem() {
-//        let encoder = PropertyListEncoder()
-//        
-//        do {
-//            let data = try encoder.encode(self.listArray)
-//            try data.write(to: self.dataFilePath!)
-//            
-//        } catch {
-//            print("error")
-//        }
-//        self.tableView.reloadData()
-    }
-    
     func loadItem() {
         todoItems = selectedCategory?.items.sorted(byKeyPath: "title", ascending: true)
-//        if let data = try? Data(contentsOf: dataFilePath!) {
-//            let decoder = PropertyListDecoder()
-//            do {
-//                listArray = try decoder.decode([Item].self, from: data)
-//            } catch {
-//                print("error \(error)")
-//            }
-//        }
+        tableView.reloadData()
     }
     
-    func deleteItem(index: Int) {
-//        todoItems.remove(at: index)
-        saveItem()
-    }
 }
 
+extension ViewController: UISearchBarDelegate {
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        todoItems = todoItems?.filter("title CONTAINS[cd] %@", searchBar.text!).sorted(byKeyPath: "dateCreated", ascending: true)
+        tableView.reloadData()
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBar.text?.count == 0 {
+            loadItem()
+            
+            DispatchQueue.main.async {
+                searchBar.resignFirstResponder()
+            }
+        }
+    }
+}
