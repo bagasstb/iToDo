@@ -41,24 +41,37 @@ class ViewController: UITableViewController {
         } else {
             cell.textLabel?.text = "No Items Added"
         }
-        
-        
-        
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-//        listArray[indexPath.row].done = !listArray[indexPath.row].done
-        saveItem()
+        if let item = todoItems?[indexPath.row] {
+            do {
+                try realm.write {
+                    item.done = !item.done
+                }
+            } catch {
+                print("Error updating data \(error)")
+            }
+        }
+        tableView.reloadData()
         tableView.deselectRow(at: indexPath, animated: true)
     }
 
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         
         if editingStyle == .delete {
+            if let item = todoItems?[indexPath.row] {
+                do {
+                    try realm.write {
+                        realm.delete(item)
+                    }
+                } catch {
+                    print("Error updating data \(error)")
+                }
+            }
 //            tableView.deleteRows(at: [indexPath], with: .fade)
-            deleteItem(index: indexPath.row)
+            tableView.reloadData()
         }
     }
     
