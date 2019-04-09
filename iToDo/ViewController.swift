@@ -7,10 +7,18 @@
 //
 
 import UIKit
+import RealmSwift
 
 class ViewController: UITableViewController {
     
-    var listArray = [Item]()
+    var todoItems: Results<Item>?
+    var selectedCategory: Category? {
+        didSet{
+            //Load item
+        }
+    }
+    
+    let realm = try! Realm()
     let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Item.plist")
     let defaults = UserDefaults.standard
     
@@ -22,23 +30,27 @@ class ViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return listArray.count
+        return todoItems?.count ?? 1
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "todoCell", for: indexPath)
         
-        let item = listArray[indexPath.row]
+        if let item = todoItems?[indexPath.row] {
+            cell.accessoryType = item.done ? .checkmark: .none
+            cell.textLabel?.text = item.title
+        } else {
+            cell.textLabel?.text = "No Items Added"
+        }
         
-        cell.accessoryType = item.done ? .checkmark: .none
-        cell.textLabel?.text = item.title
+        
         
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        listArray[indexPath.row].done = !listArray[indexPath.row].done
+//        listArray[indexPath.row].done = !listArray[indexPath.row].done
         saveItem()
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -61,7 +73,7 @@ class ViewController: UITableViewController {
             let newItem = Item()
             newItem.title = textField.text!
             
-            self.listArray.append(newItem)
+//            self.todoItems.append(newItem)
             self.saveItem()
         }
         
@@ -91,6 +103,7 @@ class ViewController: UITableViewController {
     }
     
     func loadItem() {
+        todoItems = selectedCategory?.items.sorted(byKeyPath: "title", ascending: true)
 //        if let data = try? Data(contentsOf: dataFilePath!) {
 //            let decoder = PropertyListDecoder()
 //            do {
@@ -102,7 +115,7 @@ class ViewController: UITableViewController {
     }
     
     func deleteItem(index: Int) {
-        listArray.remove(at: index)
+//        todoItems.remove(at: index)
         saveItem()
     }
 }

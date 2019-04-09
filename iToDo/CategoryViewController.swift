@@ -12,22 +12,22 @@ import RealmSwift
 class CategoryViewController: UITableViewController {
     
     let realm = try! Realm()
-    
-    var categories = [Category]()
+   
+    var categories: Results<Category>?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        loadCategory()
         // Do any additional setup after loading the view.
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return categories.count
+        return categories?.count ?? 1
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "detailCell", for: indexPath)
-        cell.textLabel?.text = categories[indexPath.row].name
+        cell.textLabel?.text = categories?[indexPath.row].name ?? "No Categories Added Yet"
         return cell
     }
     
@@ -35,7 +35,13 @@ class CategoryViewController: UITableViewController {
         self.performSegue(withIdentifier: "gotoDetail", sender: self)
     }
     
-    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let destinationVC = segue.destination as! ViewController
+        
+        if let indexPath = tableView.indexPathForSelectedRow {
+            destinationVC.selectedCategory = categories?[indexPath.row]
+        }
+    }
     @IBAction func addPressed(_ sender: UIBarButtonItem) {
         var textField = UITextField()
         let alert = UIAlertController(title: "Add New Category", message: "", preferredStyle: .alert)
@@ -43,7 +49,7 @@ class CategoryViewController: UITableViewController {
         let action = UIAlertAction(title: "Add", style: .default) { (action) in
             let newCategory = Category()
             newCategory.name = textField.text!
-            self.categories.append(newCategory)
+//            self.categories.append(newCategory) Auto update with Results from realm
             self.save(category: newCategory)
         }
         
@@ -58,8 +64,9 @@ class CategoryViewController: UITableViewController {
         present(alert, animated: true, completion: nil)
     }
     
-    func load() {
-        
+    func loadCategory() {
+        categories = realm.objects(Category.self)
+        tableView.reloadData()
     }
     
     func save(category: Category) {
