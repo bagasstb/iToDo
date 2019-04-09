@@ -24,9 +24,8 @@ class ViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.navigationItem.title = selectedCategory?.name
         loadItem()
-
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -70,11 +69,19 @@ class ViewController: UITableViewController {
         let alert = UIAlertController(title: "Add To Do List", message: "What will you do today?", preferredStyle: .alert)
         
         let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
-            let newItem = Item()
-            newItem.title = textField.text!
             
-//            self.todoItems.append(newItem)
-            self.saveItem()
+            if let currentCategory = self.selectedCategory {
+                do {
+                    try self.realm.write {
+                        let newItem = Item()
+                        newItem.title = textField.text!
+                        currentCategory.items.append(newItem)
+                    }
+                } catch {
+                    print("Error saving new item \(error)")
+                }
+            }
+            self.tableView.reloadData()
         }
         
         let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
