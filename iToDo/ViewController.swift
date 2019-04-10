@@ -19,8 +19,6 @@ class ViewController: UITableViewController {
     }
     
     let realm = try! Realm()
-    let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Item.plist")
-    let defaults = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
