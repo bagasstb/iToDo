@@ -7,17 +7,20 @@
 //
 
 import UIKit
+import CoreData
 
 class ViewController: UITableViewController {
     
     var listArray = [Item]()
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Item.plist")
     let defaults = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        loadItem()
+//        loadItem()
+        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
 
     }
     
@@ -57,8 +60,9 @@ class ViewController: UITableViewController {
         let alert = UIAlertController(title: "Add To Do List", message: "What will you do today?", preferredStyle: .alert)
         
         let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
-            let newItem = Item()
+            let newItem = Item(context: self.context)
             newItem.title = textField.text!
+            newItem.done = false
             
             self.listArray.append(newItem)
             self.saveItem()
@@ -77,12 +81,8 @@ class ViewController: UITableViewController {
     }
     
     func saveItem() {
-        let encoder = PropertyListEncoder()
-        
         do {
-            let data = try encoder.encode(self.listArray)
-            try data.write(to: self.dataFilePath!)
-            
+            try context.save()
         } catch {
             print("error")
         }
@@ -90,14 +90,14 @@ class ViewController: UITableViewController {
     }
     
     func loadItem() {
-        if let data = try? Data(contentsOf: dataFilePath!) {
-            let decoder = PropertyListDecoder()
-            do {
-                listArray = try decoder.decode([Item].self, from: data)
-            } catch {
-                print("error \(error)")
-            }
-        }
+//        if let data = try? Data(contentsOf: dataFilePath!) {
+//            let decoder = PropertyListDecoder()
+//            do {
+//                listArray = try decoder.decode([Item].self, from: data)
+//            } catch {
+//                print("error \(error)")
+//            }
+//        }
     }
     
     func deleteItem(index: Int) {
